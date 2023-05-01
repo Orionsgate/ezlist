@@ -1,26 +1,54 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <el-container>
+    <el-header>
+      <el-menu :default-active="state.activeIndex" mode="horizontal" class="menu" @select="handleSelect">
+        <el-menu-item index="home">Home</el-menu-item>
+        <el-menu-item index="about">About</el-menu-item>
+        <el-menu-item index="contact">Contact</el-menu-item>
+      </el-menu>
+    </el-header>
+    <div v-if="state.activeIndex === 'home'">
+      <TaskApp />
+    </div>
+  </el-container>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { reactive } from 'vue';
+import TaskApp from './components/TaskApp.vue';
+import { ElMenu, ElMenuItem } from 'element-plus';
 
-export default {
+import 'element-plus/es/components/menu/style/css';
+import 'element-plus/es/components/menu-item/style/css';
+
+export default{
   name: 'App',
   components: {
-    HelloWorld
+    TaskApp,
+    ElMenu,
+    ElMenuItem
+  },
+  setup() {
+
+    const state = reactive({activeIndex: 'home'});
+
+    function handleSelect(index) {
+      state.activeIndex = index;
+      console.log(state.activeIndex);
+    }
+    return {
+      state,
+      handleSelect
+    };
   }
-}
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+
+.menu {
+  justify-content: center;
+  width: 100%;
 }
+
 </style>
